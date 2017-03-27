@@ -1,6 +1,8 @@
 /*
  * Главный класс.
  * Автор: Семенова Екатерина 09-308.
+ * Исследование акций в период 13 марта 2016 - 23 декабря 2016 года
+ * Прогнозирование для 22 дней в период 23 декабря 2016 года - 25 января 2016 года
 */
 
 public class Main1 {
@@ -22,6 +24,7 @@ public class Main1 {
 			Model m = new Model();
 			data = m.importD();	
 			int day = 200;
+			int analyz = 200;
 			double earning = 0;
 			
 			
@@ -41,7 +44,7 @@ public class Main1 {
 			
 		}
 		//System.out.println("==");
-		
+/*Прогноз максимум 3 наилучших акций за день*/		
 		 	Daily d = new Daily();
 			
 			for (int l=1;l<23;l++){
@@ -86,6 +89,7 @@ public class Main1 {
 			System.out.println("==");
 			System.out.println("День №"+l);
 			System.out.println("Лучшие акции(номера):"+max1[0]+", "+max2[0]+", "+max3[0]+"");
+/*Расчет прибыли по лучшим акциям*/
 			double money = 0;
 			day++;
 			if (max1[0]!=0){
@@ -127,5 +131,33 @@ public class Main1 {
 			}
 			System.out.println(""); 
 			System.out.println("Общая прибыль(%): "+earning); 
+/*Расчет прибыли по лучшим акциям (на основании реальных данных)*/
+			double earningReal=0;
+			double[] realMoney = new double[9];
+			for( int i=0;i<22;i++){
+				analyz++; 
+				for (int j=0;j<9;j++){
+					
+					realMoney[j] = data[analyz][j]-data[analyz-1][j];
+					//System.out.println(realMoney[j]);
+				}
+				double maxi1=0;
+				double maxi2=0;
+				double maxi3=0;
+				for (int j=0;j<9;j++){
+					if (realMoney[j]>maxi1){
+						maxi1 = realMoney[j];
+					}
+					if (realMoney[j]>maxi2&&realMoney[j]!=maxi1){
+						maxi1 = realMoney[j];
+					}
+					if (realMoney[j]>maxi3&&realMoney[j]!=maxi2&&realMoney[j]!=maxi1){
+						maxi1 = realMoney[j];
+					}
+				}
+				earningReal = earningReal+maxi1+maxi2+maxi3;
+			}
+			System.out.println(""); 
+			System.out.println("Реальная прибыль(%): "+earningReal);
 	}
 }
